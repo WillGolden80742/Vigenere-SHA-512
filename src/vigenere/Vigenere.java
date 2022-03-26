@@ -149,7 +149,7 @@ public class Vigenere extends javax.swing.JFrame {
             loadingLabel.setText("Carregando ...");
             String texto = input.getText();
             String chave = chaveField.getText();
-            String hashChave = getHash(chave);
+            String hashChave = getHash(chave).replaceAll("[=]","");
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -158,7 +158,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii += (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
-                        hashChave = getHash(chave+i);
+                        hashChave = getHash(chave+i).replaceAll("[=]","");                         
                         sizeKey = hashChave.length() -1;
                         contKey = 0;
                     }
@@ -177,7 +177,7 @@ public class Vigenere extends javax.swing.JFrame {
             loadingLabel.setText("Carregando ...");
             String texto = decode64(input.getText());
             String chave = chaveField.getText();
-            String hashChave = getHash(chave);
+            String hashChave = getHash(chave).replaceAll("[=]","");
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -186,7 +186,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii -= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
-                        hashChave = getHash(chave+i);
+                        hashChave = getHash(chave+i).replaceAll("[=]","");     
                         sizeKey = hashChave.length() -1;
                         contKey = 0;
                     }
