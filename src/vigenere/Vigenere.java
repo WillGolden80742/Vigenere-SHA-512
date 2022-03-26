@@ -139,7 +139,6 @@ public class Vigenere extends javax.swing.JFrame {
             String texto = input.getText();
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
-            System.out.println(hashChave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -150,7 +149,6 @@ public class Vigenere extends javax.swing.JFrame {
                     if (contKey == sizeKey) {
                         hashChave = getHash(chave+i);
                         sizeKey = hashChave.length() -1;
-                        System.out.println("\n"+hashChave);
                         contKey = 0;
                     }
                 }
@@ -167,7 +165,6 @@ public class Vigenere extends javax.swing.JFrame {
             String texto = decode64(input.getText());
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
-            System.out.println(hashChave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -178,7 +175,6 @@ public class Vigenere extends javax.swing.JFrame {
                     if (contKey == sizeKey) {
                         hashChave = getHash(chave+i);
                         sizeKey = hashChave.length() -1;
-                        System.out.println("\n"+hashChave);
                         contKey = 0;
                     }
                 }
