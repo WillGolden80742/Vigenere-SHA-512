@@ -15,13 +15,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class Vigenere extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Vigene
-     */
+    
     public Vigenere() {
         initComponents();
         setLocation(200, 200);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,6 +39,7 @@ public class Vigenere extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         output = new javax.swing.JTextArea();
         cifrar = new javax.swing.JButton();
+        loadingLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Vigenere");
@@ -68,13 +68,17 @@ public class Vigenere extends javax.swing.JFrame {
             }
         });
 
+        loadingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(cifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(loadingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(decifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
@@ -87,17 +91,21 @@ public class Vigenere extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(chaveField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2)
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(decifrar)
-                    .addComponent(cifrar)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(decifrar)
+                        .addComponent(cifrar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(loadingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -113,7 +121,7 @@ public class Vigenere extends javax.swing.JFrame {
         new Thread(decifrarV).start();
     }//GEN-LAST:event_decifrarActionPerformed
 
-    public static String getHash(String value) {
+    public String getHash(String value) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-512");
@@ -124,18 +132,24 @@ public class Vigenere extends javax.swing.JFrame {
         return encode64(hash.toString(16));
     }
     
-    public static String encode64(String input) {
+    public String encode64(String input) {
       return Base64.getEncoder().encodeToString(input.getBytes());
     }
     
-    public static String decode64(String input) {
-      byte[] decodedBytes = Base64.getDecoder().decode(input);
+    public String decode64(String input) {
+      byte[] decodedBytes = Base64.getDecoder().decode("");
+      try {
+        decodedBytes = Base64.getDecoder().decode(input);
+      } catch (IllegalArgumentException ex) {
+        loadingLabel.setText("Decodificação falha");   
+      }
       return new String(decodedBytes);
     }
     
     private final Runnable cifrarV = new Runnable() {
         @Override
-        public void run() {
+        public void run() { 
+            loadingLabel.setText("Carregando ...");
             String texto = input.getText();
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
@@ -156,12 +170,14 @@ public class Vigenere extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Defina sua chave");
             }
             output.setText(encode64(output.getText()));
+            loadingLabel.setText("Codificação pronta");
         }
     };
 
     private final Runnable decifrarV = new Runnable() {
         @Override
         public void run() {
+            loadingLabel.setText("Carregando ...");
             String texto = decode64(input.getText());
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
@@ -181,6 +197,7 @@ public class Vigenere extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Defina sua chave!");
             }
+            loadingLabel.setText("Decodificação pronta");
         }
     };
 
@@ -209,6 +226,7 @@ public class Vigenere extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel loadingLabel;
     private javax.swing.JTextArea output;
     // End of variables declaration//GEN-END:variables
 }
