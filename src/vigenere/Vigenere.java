@@ -112,10 +112,10 @@ public class Vigenere extends javax.swing.JFrame {
         new Thread(decifrarV).start();
     }//GEN-LAST:event_decifrarActionPerformed
 
-    public static String getHashMd5(String value) {
+    public static String getHash(String value) {
         MessageDigest md;
         try {
-            md = MessageDigest.getInstance("MD5");
+            md = MessageDigest.getInstance("SHA-512");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -128,7 +128,7 @@ public class Vigenere extends javax.swing.JFrame {
         public void run() {
             String texto = input.getText();
             String chave = chaveField.getText();
-            String hashChave = getHashMd5(chave);
+            String hashChave = getHash(chave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -137,7 +137,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii += (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
-                        hashChave = getHashMd5(chave+i);
+                        hashChave = getHash(chave+i);
                         sizeKey = hashChave.length() -1;
                         System.out.println("\n"+hashChave);
                         contKey = 0;
@@ -154,7 +154,7 @@ public class Vigenere extends javax.swing.JFrame {
         public void run() {
             String texto = input.getText();
             String chave = chaveField.getText();
-            String hashChave = getHashMd5(chave);
+            String hashChave = getHash(chave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -163,7 +163,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii -= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
-                        hashChave = getHashMd5(chave+i);
+                        hashChave = getHash(chave+i);
                         sizeKey = hashChave.length() -1;
                         System.out.println("\n"+hashChave);
                         contKey = 0;
