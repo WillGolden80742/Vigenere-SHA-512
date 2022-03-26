@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -120,7 +121,16 @@ public class Vigenere extends javax.swing.JFrame {
             throw new RuntimeException(e);
         }
         BigInteger hash = new BigInteger(1, md.digest(value.getBytes()));
-        return hash.toString(16);
+        return encode64(hash.toString(16));
+    }
+    
+    public static String encode64(String input) {
+      return Base64.getEncoder().encodeToString(input.getBytes());
+    }
+    
+    public static String decode64(String input) {
+      byte[] decodedBytes = Base64.getDecoder().decode(input);
+      return new String(decodedBytes);
     }
     
     private final Runnable cifrarV = new Runnable() {
@@ -129,6 +139,7 @@ public class Vigenere extends javax.swing.JFrame {
             String texto = input.getText();
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
+            System.out.println(hashChave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -146,15 +157,17 @@ public class Vigenere extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Defina sua chave");
             }
+            output.setText(encode64(output.getText()));
         }
     };
 
     private final Runnable decifrarV = new Runnable() {
         @Override
         public void run() {
-            String texto = input.getText();
+            String texto = decode64(input.getText());
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
+            System.out.println(hashChave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
