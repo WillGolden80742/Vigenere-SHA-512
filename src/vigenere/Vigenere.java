@@ -173,6 +173,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii = (int) texto.charAt(i);
                     ascii *= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
+                    loadingLabel.setText("Codificando ... "+((((double)i/sizeChar)*100)+"    ").substring(0,4)+"%");                    
                     if (contKey == sizeKey) {
                         hashChave = getHash(chave+i);  
                         sizeKey = hashChave.length();
@@ -203,6 +204,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii = (int) texto.charAt(i);
                     ascii /= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
+                    loadingLabel.setText("Decodificando ... "+((((double)i/sizeChar)*100)+"    ").substring(0,4)+"%");                   
                     if (contKey == sizeKey) {
                         hashChave = getHash(chave+i);   
                         sizeKey = hashChave.length();
