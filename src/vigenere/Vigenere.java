@@ -15,6 +15,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class Vigenere extends javax.swing.JFrame {
 
+    private Thread code;
+    private Thread decode;
     
     public Vigenere() {
         initComponents();
@@ -110,12 +112,24 @@ public class Vigenere extends javax.swing.JFrame {
 
     private void cifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cifrarActionPerformed
         output.setText("");
-        new Thread(cifrarV).start();
+        try {
+            decode.stop();
+        } catch (NullPointerException ex) {
+            System.out.println("Já encerrado!");
+        }
+        code = new Thread(cifrarV);
+        code.start();
     }//GEN-LAST:event_cifrarActionPerformed
 
     private void decifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decifrarActionPerformed
         output.setText("");
-        new Thread(decifrarV).start();
+        try {
+            code.stop();
+        } catch (NullPointerException ex) {
+            System.out.println("Já encerrado!");
+        }
+        decode = new Thread(decifrarV);
+        decode.start();
     }//GEN-LAST:event_decifrarActionPerformed
 
     public String getHash(String value) {
@@ -159,7 +173,7 @@ public class Vigenere extends javax.swing.JFrame {
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
                         hashChave = getHash(chave+i);  
-                        sizeKey = hashChave.length() -1;
+                        sizeKey = hashChave.length();
                         contKey = 0;
                     }
                 }
@@ -186,8 +200,8 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii /= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
-                        hashChave = getHash(chave+i);            
-                        sizeKey = hashChave.length() -1;
+                        hashChave = getHash(chave+i);   
+                        sizeKey = hashChave.length();
                         contKey = 0;
                     }
                 }
