@@ -126,7 +126,7 @@ public class Vigenere extends javax.swing.JFrame {
             throw new RuntimeException(e);
         }
         BigInteger hash = new BigInteger(1, md.digest(value.getBytes()));
-        return encode64(hash.toString(16));
+        return hash.toString(16);
     }
     
     public String encode64(String input) {
@@ -149,7 +149,7 @@ public class Vigenere extends javax.swing.JFrame {
             loadingLabel.setText("Carregando ...");
             String texto = input.getText();
             String chave = chaveField.getText();
-            String hashChave = getHash(chave).replaceAll("[=]","");
+            String hashChave = getHash(chave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -158,7 +158,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii += (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
-                        hashChave = getHash(chave+i).replaceAll("[=]","");                         
+                        hashChave = getHash(chave+i);  
                         sizeKey = hashChave.length() -1;
                         contKey = 0;
                     }
@@ -177,7 +177,7 @@ public class Vigenere extends javax.swing.JFrame {
             loadingLabel.setText("Carregando ...");
             String texto = decode64(input.getText());
             String chave = chaveField.getText();
-            String hashChave = getHash(chave).replaceAll("[=]","");
+            String hashChave = getHash(chave);
             int ascii = 0, contKey = 0, sizeKey = hashChave.length(), sizeChar = texto.length();
             output.setText("");
             if (!chave.equals("")) {
@@ -186,7 +186,7 @@ public class Vigenere extends javax.swing.JFrame {
                     ascii -= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
-                        hashChave = getHash(chave+i).replaceAll("[=]","");     
+                        hashChave = getHash(chave+i);            
                         sizeKey = hashChave.length() -1;
                         contKey = 0;
                     }
