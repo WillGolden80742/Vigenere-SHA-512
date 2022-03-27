@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -104,7 +105,7 @@ public class Vigenere extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(decifrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cifrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loadingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(loadingLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -115,7 +116,7 @@ public class Vigenere extends javax.swing.JFrame {
         try {
             decode.stop();
         } catch (NullPointerException ex) {
-            System.out.println("Já encerrado!");
+            // Já encerrado
         }
         code = new Thread(cifrarV);
         code.start();
@@ -126,7 +127,7 @@ public class Vigenere extends javax.swing.JFrame {
         try {
             code.stop();
         } catch (NullPointerException ex) {
-            System.out.println("Já encerrado!");
+           // Já encerrado
         }
         decode = new Thread(decifrarV);
         decode.start();
@@ -160,7 +161,8 @@ public class Vigenere extends javax.swing.JFrame {
     private final Runnable cifrarV = new Runnable() {
         @Override
         public void run() { 
-            loadingLabel.setText("Carregando ...");
+            loadingLabel.setIcon(new ImageIcon(getClass().getResource("/Images/loading-buffering.gif")));
+            loadingLabel.setText("Codificando ...");
             String texto = input.getText();
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
@@ -181,6 +183,7 @@ public class Vigenere extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Defina sua chave");
             }
             output.setText(encode64(output.getText()));
+            loadingLabel.setIcon(null);
             loadingLabel.setText("Codificação pronta");
         }
     };
@@ -188,7 +191,8 @@ public class Vigenere extends javax.swing.JFrame {
     private final Runnable decifrarV = new Runnable() {
         @Override
         public void run() {
-            loadingLabel.setText("Carregando ...");
+            loadingLabel.setIcon(new ImageIcon(getClass().getResource("/Images/loading-buffering.gif")));
+            loadingLabel.setText("Decodificando ...");
             String texto = decode64(input.getText());
             String chave = chaveField.getText();
             String hashChave = getHash(chave);
@@ -208,6 +212,7 @@ public class Vigenere extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Defina sua chave!");
             }
+            loadingLabel.setIcon(null);
             loadingLabel.setText("Decodificação pronta");
         }
     };
