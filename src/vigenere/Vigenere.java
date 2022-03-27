@@ -155,7 +155,7 @@ public class Vigenere extends javax.swing.JFrame {
             if (!chave.equals("")) {
                 for (int i = 0; i < sizeChar; i++) {
                     ascii = (int) texto.charAt(i);
-                    ascii += (int) hashChave.charAt(contKey++);
+                    ascii *= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
                         hashChave = getHash(chave+i);  
@@ -183,7 +183,7 @@ public class Vigenere extends javax.swing.JFrame {
             if (!chave.equals("")) {
                 for (int i = 0; i < sizeChar; i++) {
                     ascii = (int) texto.charAt(i);
-                    ascii -= (int) hashChave.charAt(contKey++);
+                    ascii /= (int) hashChave.charAt(contKey++);
                     output.append("" + ((char) ascii));
                     if (contKey == sizeKey) {
                         hashChave = getHash(chave+i);            
