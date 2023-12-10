@@ -15,7 +15,7 @@ These instructions will help you set up and run the Vigenere Cipher Application 
 1. Clone the repository to your local machine.
 
 ```bash
-git clone https://github.com/your-username/vigenere-cipher.git
+git clone https://github.com/WillGolden80742/vigenere-cipher.git
 ```
 
 2. Open the project in your preferred Java Integrated Development Environment (IDE).
